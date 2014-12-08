@@ -1,27 +1,27 @@
 #!/bin/bash
-# start rhodecode
+# start kallithea
 
 ROOT=$OPENSHIFT_DATA_DIR
-CONF_NAME="/rhodecode/production.ini"
-PID_PATH="$ROOT/rhodecode/rhodecode.pid"
-LOG_PATH="$ROOT/rhodecode/rhodecode.log"
+CONF_NAME="/kallithea/production.ini"
+PID_PATH="$ROOT/kallithea/kallithea.pid"
+LOG_PATH="$ROOT/kallithea/kallithea.log"
 
-source $ROOT/rhodecode-venv/bin/activate
+source $ROOT/kallithea-venv/bin/activate
 
-cd $ROOT/rhodecode
-if [ -f $ROOT/rhodecode/install ]
+cd $ROOT/kallithea
+if [ -f $ROOT/kallithea/install ]
 then
-  paster setup-rhodecode production.ini --user="admin" --password="rhodecode" --email="admin@test.com" --repos="$ROOT/rhodecode/repos" --force-yes
+  paster setup-kallithea production.ini --user="admin" --password="changethis" --email="admin@test.com" --repos="$ROOT/kallithea/repos" --force-yes
   echo ">>>>>>>>>>>>>>>>>>>"
   echo "user: admin"
-  echo "pass: rhodecode"
+  echo "pass: changethis"
   echo ">>>>>>>>>>>>>>>>>>>"
-  rm $ROOT/rhodecode/install
+  rm $ROOT/kallithea/install
 else
   paster upgrade-db production.ini --force-yes
 fi
 
-PYTHON_EGG_CACHE="/tmp" $ROOT/rhodecode-venv/bin/paster serve --daemon \
+PYTHON_EGG_CACHE="/tmp" $ROOT/kallithea-venv/bin/paster serve --daemon \
   --user=$USER \
   --group=$USER \
   --pid-file=$PID_PATH \
