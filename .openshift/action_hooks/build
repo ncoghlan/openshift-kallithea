@@ -7,11 +7,11 @@ then
   PIP="psycopg2"
 fi
 
-mkdir -p $ROOT/rhodecode/repos
-rm -Rf $ROOT/rhodecode-venv
-virtualenv --no-site-packages $ROOT/rhodecode-venv
-source $ROOT/rhodecode-venv/bin/activate
-cd $ROOT/rhodecode
+mkdir -p $ROOT/kallithea/repos
+rm -Rf $ROOT/kallithea-venv
+virtualenv --no-site-packages $ROOT/kallithea-venv
+source $ROOT/kallithea-venv/bin/activate
+cd $ROOT/kallithea
 
 if [[ $PIP ]]
 then
@@ -35,19 +35,15 @@ then
   echo "Installed git into $ROOT/bin"
   cd ..
   rm -Rf git
-  cd $ROOT/rhodecode
+  cd $ROOT/kallithea
 fi
 
 if [ ! -f production.ini ]
 then
-  pip install https://rhodecode.com/dl/tools/latest
-  pip install https://rhodecode.com/dl/latest
-  rhodecode-config --filename=production.ini
-  touch $ROOT/rhodecode/install
+  # TODO: First time Kallithea install
+  touch $ROOT/kallithea/install
 else
-  pip install --upgrade https://rhodecode.com/dl/tools/latest
-  pip install --upgrade https://rhodecode.com/dl/latest
-  rhodecode-config --upgrade --filename=production.ini
+  # TODO: Kallithea upgrade
 fi
 
 sed -i 's/^debug = true/debug = false/' production.ini
