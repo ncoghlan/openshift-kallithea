@@ -1,7 +1,7 @@
 Kallithea on OpenShift
 =========================
 
-NOTE: THIS QUICKSTART IS NOT FUNCTIONAL YET. THIS NOTICE WILL BE REMOVED ONCE IT IS OPERATIONAL.
+NOTE: Deployment with this quickstart is known to be functional, but upgrades have not been tested yet.
 
 ``Kallithea`` is a fast and powerful management tool for Mercurial_ and GIT_
 with a built in push/pull server, full text search, pull requests and
@@ -11,7 +11,7 @@ Kallithea was forked from RhodeCode in July 2015. This quickstart was forked fro
 
 More information can be found at https://kallithea-scm.org/
 
-This quickstart is *not* recommended for production use, but should be perfectly acceptable for running demonstration servers.
+This quickstart is *not* recommended for production use, but should be perfectly acceptable for running demonstration servers. http://kallithea-ncoghlan.rhcloud.com/ is one such example.
 
 Running on OpenShift
 --------------------
