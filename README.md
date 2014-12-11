@@ -11,18 +11,25 @@ Kallithea was forked from RhodeCode in July 2015. This quickstart was forked fro
 
 More information can be found at https://kallithea-scm.org/
 
+This quickstart is *not* recommended for production use, but should be perfectly acceptable for running demonstration servers.
+
 Running on OpenShift
 --------------------
 
 Create an account at http://openshift.redhat.com/
 
-Create a DIY application. If you may add a PostgreSQL cartridge.
+Create a DIY application, together with a PostgreSQL cartridge:
 
     rhc app create kallithea diy-0.1 postgresql-9.2
 
-Add this upstream Kallithea quickstart repo
+Clear out the files from the DIY template:
 
     rm -R diy .openshift misc README.md
+    git add .
+    git commit -m "Remove template files"
+
+Add the contents of this Kallithea quickstart repo:
+
     git remote add quickstart -m master https://github.com/ncoghlan/openshift-kallithea.git
     git pull -s recursive -X theirs quickstart master
 
