@@ -8,10 +8,11 @@ LOG_PATH="$ROOT/kallithea/kallithea.log"
 
 source $ROOT/kallithea-venv/bin/activate
 
+# Create or update the database
 cd $ROOT/kallithea
 if [ -f $ROOT/kallithea/install ]
 then
-  paster setup-kallithea production.ini --user="admin" --password="changethis" --email="admin@test.com" --repos="$ROOT/kallithea/repos" --force-yes
+  paster setup-db production.ini --user="admin" --password="changethis" --email="admin@test.com" --repos="$ROOT/kallithea/repos" --force-yes
   echo ">>>>>>>>>>>>>>>>>>>"
   echo "user: admin"
   echo "pass: changethis"
@@ -20,6 +21,9 @@ then
 else
   paster upgrade-db production.ini --force-yes
 fi
+
+# TODO: Switch to running under Apache/mod_wsgi
+# https://pythonhosted.org/Kallithea/setup.html#apache-s-wsgi-config
 
 PYTHON_EGG_CACHE="/tmp" $ROOT/kallithea-venv/bin/paster serve --daemon \
   --user=$USER \

@@ -1,23 +1,29 @@
 #!/bin/bash
 ROOT=$OPENSHIFT_DATA_DIR
 
+# Use PostgreSQL if it's been configured for the app
 if [[ $OPENSHIFT_POSTGRESQL_DB_URL ]]
 then
   DB_URL=$OPENSHIFT_POSTGRESQL_DB_URL/$PGDATABASE
-  PIP="psycopg2"
+  DB_ADAPTER="psycopg2"
 fi
 
+# Create the Kallithea repos directory and Python venv
 mkdir -p $ROOT/kallithea/repos
 rm -Rf $ROOT/kallithea-venv
 virtualenv --no-site-packages $ROOT/kallithea-venv
 source $ROOT/kallithea-venv/bin/activate
 cd $ROOT/kallithea
 
-if [[ $PIP ]]
+# Install the adapter for talking to the DB
+if [[ $DB_ADAPTER ]]
 then
-  pip install $PIP
+  pip install $DB_ADAPTER
 fi
 
+# TODO: It would be nice not to need to build git from source here
+# Likely not worth worrying about vs just waiting for full support for
+# Docker container images, though.
 if [ ! -f $ROOT/bin/git ]
 then
   echo "export PATH=$ROOT/bin:$PATH" >> $ROOT/.bash_profile
@@ -38,14 +44,20 @@ then
   cd $ROOT/kallithea
 fi
 
+# Install or upgrade Kallithea itself
 if [ ! -f production.ini ]
 then
-  # TODO: First time Kallithea install
+  pip install kallithea
+  paster make-config Kallithea production.ini
+  # TODO: Look at also setting up the Kallithea extensions
+  # paster make-rcext production.ini
+  # Tell the start hook this is the initial installation
   touch $ROOT/kallithea/install
 else
-  # TODO: Kallithea upgrade
+  pip install --upgrade kallithea
 fi
 
+# Adjust the app config settings
 sed -i 's/^debug = true/debug = false/' production.ini
 sed -i "s/^host = .*$/host = $OPENSHIFT_DIY_IP/" production.ini
 sed -i "s/^port = .*$/port = $OPENSHIFT_DIY_PORT/" production.ini
