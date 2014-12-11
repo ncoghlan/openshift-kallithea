@@ -23,8 +23,8 @@ Create a DIY application. If you may add a PostgreSQL cartridge.
 Add this upstream Kallithea quickstart repo
 
     rm -R diy .openshift misc README.md
-    git remote add upstream -m master https://github.com/ncoghlan/openshift-kallithea.git
-    git pull -s recursive -X theirs upstream master
+    git remote add quickstart -m master https://github.com/ncoghlan/openshift-kallithea.git
+    git pull -s recursive -X theirs quickstart master
 
 Push the repo upstream to OpenShift
 
