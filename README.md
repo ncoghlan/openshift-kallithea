@@ -7,7 +7,7 @@ NOTE: Deployment with this quickstart is known to be functional, but upgrades ha
 with a built in push/pull server, full text search, pull requests and
 code-review system.
 
-Kallithea was forked from RhodeCode in July 2015. This quickstart was forked from the RhodeCode kickstart in December 2015.
+Kallithea was forked from RhodeCode in July 2014. This quickstart was forked from the RhodeCode kickstart in December 2014.
 
 More information can be found at https://kallithea-scm.org/
 
