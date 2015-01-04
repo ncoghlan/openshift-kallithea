@@ -1,0 +1,3 @@
+psycopg2
+kallithea
+https://dl.dropboxusercontent.com/u/22571016/mod_wsgi-4.4.4.tar.gz

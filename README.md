@@ -18,24 +18,18 @@ Running on OpenShift
 
 Create an account at http://openshift.redhat.com/
 
-Create a DIY application, together with a PostgreSQL cartridge:
+Create a python-2.7 application, together with a PostgreSQL cartridge:
 
-    rhc app create kallithea diy-0.1 postgresql-9.2
+    rhc app create kallithea python-2.7 postgresql-9.2 --no-git
 
-Clear out the files from the DIY template:
+Add the OpenShift git repository as a remote to the local repository, using the actual git remote URI given:
 
-    rm -R diy .openshift misc README.md
-    git add .
-    git commit -m "Remove template files"
+    git remote add openshift
+    ssh://<app-id>@kallithea-<account-name>.rhcloud.com/~/git/kallithea.git/
 
-Add the contents of this Kallithea quickstart repo:
+Force push the local repository up to the OpenShift repository:
 
-    git remote add quickstart -m master https://github.com/ncoghlan/openshift-kallithea.git
-    git pull -s recursive -X theirs quickstart master
-
-Push the repo upstream to OpenShift
-
-    git push
+    git push -f openshift master
 
 Head to your application at:
 
@@ -43,6 +37,7 @@ Head to your application at:
 
 Default Credentials
 -------------------
+
 <table>
 <tr><td>Default Admin Username</td><td>admin</td></tr>
 <tr><td>Default Admin Password</td><td>changethis</td></tr>
