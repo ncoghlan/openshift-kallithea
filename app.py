@@ -14,5 +14,5 @@ KALLITHEA_INIFILE = os.path.join(KALLITHEA_HOMEDIR, 'production.ini')
 # waiting on git commands, we use of many threads in one process shouldn't
 # be an issue.
 
-mod_wsgi.server.main('start-server', '--application-type', 'paste',
-        KALLITHEA_INIFILE, '--processes', '2', '--threads', '15')
+mod_wsgi.server.start('--application-type', 'paste', KALLITHEA_INIFILE,
+        '--processes', '2', '--threads', '15')
