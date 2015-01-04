@@ -3,6 +3,8 @@ import os
 import mod_wsgi.server
 
 OPENSHIFT_DATA_DIR = os.environ['OPENSHIFT_DATA_DIR']
+OPENSHIFT_PYTHON_DIR = os.environ['OPENSHIFT_PYTHON_DIR']
+
 KALLITHEA_HOMEDIR = os.path.join(OPENSHIFT_DATA_DIR, 'kallithea-runtime')
 KALLITHEA_INIFILE = os.path.join(KALLITHEA_HOMEDIR, 'production.ini')
 
@@ -14,5 +16,11 @@ KALLITHEA_INIFILE = os.path.join(KALLITHEA_HOMEDIR, 'production.ini')
 # waiting on git commands, we use of many threads in one process shouldn't
 # be an issue.
 
-mod_wsgi.server.start('--application-type', 'paste', KALLITHEA_INIFILE,
-        '--processes', '2', '--threads', '15')
+SERVER_ROOT = os.path.join(OPENSHIFT_PYTHON_DIR, 'run/mod_wsgi')
+
+HOST = os.environ['OPENSHIFT_PYTHON_IP']
+PORT = os.environ['OPENSHIFT_PYTHON_PORT']
+
+mod_wsgi.server.start('--server-root', SERVER_ROOT, '--log-to-terminal',
+        '--host', HOST, '--port', PORT, '--application-type', 'paste',
+        KALLITHEA_INIFILE, '--processes', '2', '--threads', '15')
