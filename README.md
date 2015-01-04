@@ -24,8 +24,7 @@ Create a python-2.7 application, together with a PostgreSQL cartridge:
 
 Add the OpenShift git repository as a remote to the local repository, using the actual git remote URI given:
 
-    git remote add openshift
-    ssh://<app-id>@kallithea-<account-name>.rhcloud.com/~/git/kallithea.git/
+    git remote add openshift ssh://<app-id>@kallithea-<account-name>.rhcloud.com/~/git/kallithea.git/
 
 Force push the local repository up to the OpenShift repository:
 
