@@ -13,15 +13,18 @@ KALLITHEA_INIFILE = os.path.join(KALLITHEA_HOMEDIR, 'production.ini')
 # line 'python -u app.py', which it then expects to be the web
 # application process. If we don't override the process name then it
 # changes and the control script thinks the web application didn't
-# start.
+# start. Do be aware that we will actually end up with multiple
+# processes being named in this special way. The service control script
+# isn't specifically written to deal with potentially forking web
+# application processes, but luckily it still appears to works okay.
 #
-# Note that because average response time is quite long, we increase the
-# capacity for concurrent requests. Each Kallithea instance is quite
-# memory hungry though so although increasing processes over threads can
-# be better, we can't set it too high else we will run out of memory
-# with a small gear. Most requests will be I/O bound on accessing
-# database or waiting on git commands, we use of many threads in one
-# process shouldn't be an issue.
+# Because average response time for requests against Kallithea are going
+# to be quite long, we increase the capacity for concurrent requests.
+# Each Kallithea instance is quite memory hungry though so although
+# increasing processes over threads can be better, we can't set it too
+# high else we will run out of memory with a small gear. Most requests
+# will be I/O bound on accessing database or waiting on git commands, we
+# use of many threads in one process shouldn't be an issue.
 
 SERVER_ROOT = os.path.join(OPENSHIFT_PYTHON_DIR, 'run/mod_wsgi')
 
