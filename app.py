@@ -42,6 +42,6 @@ PORT = os.environ['OPENSHIFT_PYTHON_PORT']
 #        '--host', HOST, '--port', PORT, '--application-type', 'paste',
 #        KALLITHEA_INIFILE, '--processes', '2', '--threads', '15')
 
-PROGRAM = os.path.join(os.path.dirname(__file__), 'app.sh')
+SCRIPT = os.path.join(os.path.dirname(__file__), 'app.sh')
 
-os.execl(PROGRAM, 'python -u app.py')
+os.execl('/bin/bash', 'bash (python -u app.py)', SCRIPT)
