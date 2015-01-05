@@ -17,6 +17,12 @@ KALLITHEA_INIFILE = os.path.join(KALLITHEA_HOMEDIR, 'production.ini')
 # processes being named in this special way. The service control script
 # isn't specifically written to deal with potentially forking web
 # application processes, but luckily it still appears to works okay.
+# There could be an issue though if the gear is long lived enough that
+# process IDs wrap around and get reused as some of the process IDs
+# potentially captured will be ephemeral Apache child worker processes.
+# On shutdown or restart of just the web application we therefore risk
+# killing processes associated with some other service running in the
+# main gear.
 #
 # Because average response time for requests against Kallithea are going
 # to be quite long, we increase the capacity for concurrent requests.
