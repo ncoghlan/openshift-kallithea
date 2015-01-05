@@ -37,7 +37,11 @@ SERVER_ROOT = os.path.join(OPENSHIFT_PYTHON_DIR, 'run/mod_wsgi')
 HOST = os.environ['OPENSHIFT_PYTHON_IP']
 PORT = os.environ['OPENSHIFT_PYTHON_PORT']
 
-mod_wsgi.server.start('--process-name', 'httpd (python -u app.py)',
-        '--server-root', SERVER_ROOT, '--log-to-terminal',
-        '--host', HOST, '--port', PORT, '--application-type', 'paste',
-        KALLITHEA_INIFILE, '--processes', '2', '--threads', '15')
+#mod_wsgi.server.start('--process-name', 'httpd (python -u app.py)',
+#        '--server-root', SERVER_ROOT, '--log-to-terminal',
+#        '--host', HOST, '--port', PORT, '--application-type', 'paste',
+#        KALLITHEA_INIFILE, '--processes', '2', '--threads', '15')
+
+PROGRAM = os.path.join(os.path.dirname(__file__), 'app.sh')
+
+os.execl(PROGRAM, 'python -u app.py')
