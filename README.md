@@ -32,6 +32,11 @@ Create a python-2.7 application, together with a PostgreSQL cartridge:
 
     rhc app create kallithea python-2.7 postgresql-9.2 --no-git
 
+Clone the quickstart repo and switch into it:
+
+    git clone https://github.com/ncoghlan/openshift-kallithea.git kallithea
+    cd kallithea
+
 Add the OpenShift git repository as a remote to the local repository, using
 the actual git remote URI given:
 
