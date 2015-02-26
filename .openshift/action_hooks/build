@@ -1,69 +1,20 @@
-#!/bin/bash
-ROOT=$OPENSHIFT_DATA_DIR
+#!/usr/bin/env bash
 
-# Use PostgreSQL if it's been configured for the app
-if [[ $OPENSHIFT_POSTGRESQL_DB_URL ]]
-then
-  DB_URL=$OPENSHIFT_POSTGRESQL_DB_URL/$PGDATABASE
-  DB_ADAPTER="psycopg2"
-fi
+set -eo pipefail
 
-# Create the Kallithea repos directory and Python venv
-mkdir -p $ROOT/kallithea/repos
-rm -Rf $ROOT/kallithea-venv
-virtualenv --no-site-packages $ROOT/kallithea-venv
-source $ROOT/kallithea-venv/bin/activate
-cd $ROOT/kallithea
+KALLITHEA_HOMEDIR=$OPENSHIFT_DATA_DIR/kallithea-runtime
 
-# Install the adapter for talking to the DB
-if [[ $DB_ADAPTER ]]
-then
-  pip install $DB_ADAPTER
-fi
+mkdir -p $KALLITHEA_HOMEDIR
+cd $KALLITHEA_HOMEDIR
 
-# TODO: It would be nice not to need to build git from source here
-# Likely not worth worrying about vs just waiting for full support for
-# Docker container images, though.
-if [ ! -f $ROOT/bin/git ]
-then
-  echo "export PATH=$ROOT/bin:$PATH" >> $ROOT/.bash_profile
-  mkdir -p $ROOT/bin
-  cd $ROOT
-  rm -rf git
-  wget https://github.com/git/git/archive/v1.8.5.5.tar.gz -O git.tar.gz
-  tar xzf git.tar.gz --transform 's/git-1.8.5.5/git/'
-  rm git.tar.gz
-  cd git
-  echo "Installing git in prefix $ROOT"
-  ./GIT-VERSION-GEN
-  make prefix=$ROOT all install
-  export PATH=$ROOT/bin:$PATH
-  echo "Installed git into $ROOT/bin"
-  cd ..
-  rm -Rf git
-  cd $ROOT/kallithea
-fi
+if ! test -f production.ini; then
+    paster make-config Kallithea production.ini
 
-# Install or upgrade Kallithea itself
-if [ ! -f production.ini ]
-then
-  pip install kallithea
-  paster make-config Kallithea production.ini
-  # TODO: Look at also setting up the Kallithea extensions
-  # paster make-rcext production.ini
-  # Tell the start hook this is the initial installation
-  touch $ROOT/kallithea/install
-else
-  pip install --upgrade kallithea
-fi
+    touch database_setup_required
 
-# Adjust the app config settings
-sed -i 's/^debug = true/debug = false/' production.ini
-sed -i "s/^host = .*$/host = $OPENSHIFT_DIY_IP/" production.ini
-sed -i "s/^port = .*$/port = $OPENSHIFT_DIY_PORT/" production.ini
-sed -i 's/^use_celery = .*$/use_celery = false/' production.ini
-sed -i "s;^git_path = .*$;git_path = $ROOT/bin/git;" production.ini
-if [[ $DB_URL ]]
-then
-  sed -i 's#^sqlalchemy\.db1\.url = .*$#sqlalchemy\.db1\.url = '"$DB_URL"'#' production.ini
+    sed -i.bak "s/^debug = true/debug = false/" production.ini
+    sed -i.bak "s/^use_celery = .*$/use_celery = false/" production.ini
+    sed -i.bak "s%^git_path = .*$%git_path = `which git`%" production.ini
+
+    cat production.ini
 fi
