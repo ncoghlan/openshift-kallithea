@@ -1,8 +1,9 @@
 Kallithea on OpenShift
 =========================
 
-NOTE: Deployment with this quickstart is known to be functional, but
-upgrades have not been tested yet.
+*NOTE: Deployment with this quickstart may currently be broken - it
+was recently updated to deploy on mod_wsgi-express in the
+official Python 2.7 cartridge, and is still undergoing retesting.*
 
 ``Kallithea`` is a fast and powerful management tool for
 [Mercurial](http://mercurial.selenic.com) and [GIT](http://git-scm.com)
