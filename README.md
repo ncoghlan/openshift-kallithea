@@ -1,7 +1,7 @@
 Kallithea on OpenShift
 =========================
 
-*NOTE: Deployment with this quickstart may currently be broken - it
+*NOTE: Deployment with this quickstart is currently broken - it
 was recently updated to deploy on mod_wsgi-express in the
 official Python 2.7 cartridge, and is still undergoing retesting.*
 
